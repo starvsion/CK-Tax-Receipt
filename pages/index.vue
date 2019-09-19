@@ -42,7 +42,7 @@
                     </address>
 <br>
                     <address class="App__personal-address">
-                        正覺寺 ChingKok Temple of Toronto |
+                        正覺寺 Ching Kwok Temple of Toronto |
                         200 Bathurst Street |
                         +1 646 123 4567 
                     </address>
