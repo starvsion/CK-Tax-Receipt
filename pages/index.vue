@@ -1,110 +1,47 @@
 <template>
-    <el-container>
-        <el-header>Tax Receipt 生成器</el-header>
-        <el-main>
-            <el-form>
-                <el-row>
-                    <el-col :span="12">
-                        <el-form-item label="捐獻者">
-                            <el-autocomplete
-                                :fetch-suggestions="fetchDonors"
-                                @select="fetchDonation"
-                            >
-                                <template
-                                    #default="{ item }"
-                                >{{ item["名字"] }} ({{ item["聯系電話"] }} {{ item["電郵"] }})</template>
-                            </el-autocomplete>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="年份">
-                            <el-select v-model="year">
-                                <el-option
-                                    v-for="item in Array.from(Array(10), (_, index) => new Date().getFullYear() - index)"
-                                    :key="item"
-                                    :label="item"
-                                    :value="item"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-
-            <div v-if="donationData && donationData.length > 0">
-                <header class="App__header">
-                    <address>
-                        布施者 Donor : <strong>{{ donorData["名字"] }}</strong>
-                        <br />
-                        電郵 Email : {{  donorData["電郵"] ||"N/A" }}
-                        <br />
-                       聯繫電話 Contact Number :  {{  donorData["聯繫電話"] || "N/A" }}
-                    </address>
-<br>
-                    <address class="App__personal-address">
-                        正覺寺 Ching Kwok Temple of Toronto |
-                        200 Bathurst Street |
-                        +1 646 123 4567 
-                    </address>
-                </header>
-                <br>
-
-                <main class="App__main">
-                    <el-card v-for="({fields}, key) in donationData" :key="key">
-                        數目： <b>{{fields["數目"]}}</b>
-                        備註： <b>{{fields["備註"]}}</b>
-                        日期： <b>{{fields["捐贈日期"]}}</b>
-                    </el-card>
-                </main>
-
-                <footer class="App__footer">
-                  總數： {{ donorData["捐赠总额"] }}
-                </footer>
-            </div>
-        </el-main>
-        <el-footer>
-            ©
-            <a href="http://www.cktemple.com/">Ching Kwok Buddhist Temple</a>
-            {{ new Date().getFullYear() }}
-        </el-footer>
-    </el-container>
+    <div class="bg">
+        <a4-paper>
+            <template>
+                <receipt :sn="sn1" />
+            </template>
+            <template #bottom>
+                <receipt :sn="sn2" />
+            </template>
+        </a4-paper>
+    </div>
 </template>
 
 <script>
+import A4Paper from "@/components/A4Paper";
+import receipt from "@/components/Receipt";
 import AirTableApi from "@/assets/api/AirTableApi";
 
 export default {
     name: "Index",
-    data: () => ({
-        airTableApi: new AirTableApi(
-            process.env.atApiKey,
-            process.env.atBaseId
-        ),
-        donationData: null,
-        donorData: null,
-        year: new Date().getFullYear(),
-    }),
-    methods: {
-        fetchDonors(queryString, callback) {
-            this.airTableApi.getDonors().then(donors =>
-                callback(
-                    donors.map(donor => ({
-                        ...donor.fields,
-                        atId: donor.getId()
-                    }))
-                )
-            );
-        },
-        fetchDonation(donorData) {
-            this.airTableApi.getListByDonor(donorData["名字"], this.year)
-            .then(({donations, donor}) => {
-                this.donationData = donations;
-                this.donorData = donor;
-            }) ;
+    components: {
+        "a4-paper": A4Paper,
+        receipt,
+    },
+    data: () => {
+        return {
+            airTableApi: new AirTableApi(),
+            sn1: -1,
+            sn2: -2,
+        };
+    },
+    async mounted () {
+        this.sn1 = await this.airTableApi.getReceiptNumber();
+        this.sn2 = await this.airTableApi.getReceiptNumber();
+
+        if (this.sn1 === this.sn2) {
+            this.sn2 ++;
         }
-    }
+    },
 };
 </script>
 
 <style lang="scss" scoped>
+    .bg {
+        background: rgb(204, 204, 204);
+    }
 </style>

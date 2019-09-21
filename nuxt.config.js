@@ -28,6 +28,7 @@ export default {
 */
     css: [
         "element-ui/lib/theme-chalk/index.css",
+        "@/assets/sass/app.scss"
     ],
     /*
 ** Plugins to load before mounting the App
@@ -35,6 +36,8 @@ export default {
     plugins: [
         "@/plugins/element-ui",
         "@/plugins/vue-luxon",
+                "@/plugins/plugins",
+
     ],
     /*
 ** Nuxt.js modules

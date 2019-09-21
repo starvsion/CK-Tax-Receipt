@@ -1,14 +1,17 @@
 // src/utils/airtable.js
 import Airtable from "airtable";
+
 const LIST_TABLE = "捐贈列表";
 const DONOR_TABLE = "捐贈者";
 
 export default class AirTableApi {
     airtableBase;
-    constructor (apiKey, baseId) {
-        this.airtableBase = new Airtable({ apiKey, })
-            .base(baseId);
+
+    constructor () {
+        this.airtableBase = new Airtable({ apiKey: process.env.atApiKey, })
+            .base(process.env.atBaseId);
     }
+
     async getDonors () {
         const result = await this.airtableBase(DONOR_TABLE).select({
             fields: ["名字", "聯系電話", "電郵", ],
@@ -39,5 +42,38 @@ export default class AirTableApi {
         }).all();
 
         return { donations, donor: donor[0].fields, };
+    }
+
+    getReceiptNumber () {
+        return this.airtableBase("Receipt").select({
+            fields: ["id", "Amount", ],
+            maxRecords: 1,
+            sort: [{ field: "id", direction: "desc", }, ],
+        })
+            .firstPage()
+            .then((records) => {
+                if (!records || records.length < 1) {
+                    return this.insertEmptyReceipt();
+                }
+
+                if (records[0].fields.Amount <= 0) {
+                    return this.insertEmptyReceipt();
+                }
+
+                return records[0].fields.id;
+            });
+    }
+
+    insertEmptyReceipt () {
+        return this.airtableBase("Receipt").create([{ fields: {}, }, ])
+            .then(records => records[0].fields.id);
+    }
+
+    saveReceipt (name, amount) {
+        return this.airtableBase("Receipt").create({ fields: {
+            Name: name,
+            Amount: amount,
+        }, })
+            .then(records => records[0].fields.id);
     }
 }

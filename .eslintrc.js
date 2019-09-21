@@ -16,6 +16,8 @@ module.exports = {
     'camelcase': [0, {
       'properties': 'always'
     }],
+          'vue/html-indent': [0,4],
+
     'comma-dangle': [2, 'always'],
     'comma-spacing': [2, {
       'before': false,

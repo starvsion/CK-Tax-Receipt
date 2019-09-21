@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css?family=Fira+Mono&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+.number-text {
+    font-family: "Fira Mono", monospace;
+}
+
+body {
+    font-family: Nunito;
+    font-size: 12px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.logo {
+    height: 1in;
+    float: right;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.text-red {
+    color: red;
+}
+
+.signature {
+    border-bottom: 3px solid #000;
+    width: 8cm;
+    height: 1.1cm;
+    margin-bottom: 0.2in;
+}
+
+.org-detail {
+    @extend .text-right;
+}
+
+.d-flex {
+    display: flex;
+
+    &.justify-start {
+        justify-content: flex-start;
+    }
+
+    &.justify-end {
+        justify-content: flex-end;
+    }
+}
