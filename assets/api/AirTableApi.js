@@ -8,13 +8,13 @@ export default class AirTableApi {
     airtableBase;
 
     constructor () {
-        this.airtableBase = new Airtable({ apiKey: process.env.atApiKey, })
+        this.airtableBase = new Airtable({ apiKey: process.env.atApiKey })
             .base(process.env.atBaseId);
     }
 
     async getDonors () {
         const result = await this.airtableBase(DONOR_TABLE).select({
-            fields: ["名字", "聯系電話", "電郵", ],
+            fields: ["名字", "聯系電話", "電郵" ],
             view: "viwI7WafvVReYZvWG",
         }).all();
         return result;
@@ -41,14 +41,14 @@ export default class AirTableApi {
             view: "viwe1hO8jp4biM3sv",
         }).all();
 
-        return { donations, donor: donor[0].fields, };
+        return { donations, donor: donor[0].fields };
     }
 
     getReceiptNumber () {
         return this.airtableBase("Receipt").select({
-            fields: ["id", "Amount", ],
+            fields: ["id", "Amount" ],
             maxRecords: 1,
-            sort: [{ field: "id", direction: "desc", }, ],
+            sort: [{ field: "id", direction: "desc" } ],
         })
             .firstPage()
             .then((records) => {
@@ -56,24 +56,32 @@ export default class AirTableApi {
                     return this.insertEmptyReceipt();
                 }
 
-                if (records[0].fields.Amount <= 0) {
+                if (records[0].fields.Amount > 0) {
                     return this.insertEmptyReceipt();
                 }
 
-                return records[0].fields.id;
+                return {
+                    [records[0].getId()]: records[0].fields.id,
+                };
             });
     }
 
     insertEmptyReceipt () {
-        return this.airtableBase("Receipt").create([{ fields: {}, }, ])
-            .then(records => records[0].fields.id);
+        return this.airtableBase("Receipt").create([{ fields: {} } ])
+            .then((records) => {
+                return {
+                    [records[0].getId()]: records[0].fields.id,
+                };
+            });
     }
 
-    saveReceipt (name, amount) {
-        return this.airtableBase("Receipt").create({ fields: {
-            Name: name,
-            Amount: amount,
-        }, })
-            .then(records => records[0].fields.id);
+    async saveReceipt (id, name, amount) {
+        return this.airtableBase("Receipt").update(
+            id,
+            {
+                Name: name,
+                Amount: parseFloat(amount.replace(/[^\w\s\\.]/gi, "").replace("CA", "")),
+            }
+        );
     }
 }

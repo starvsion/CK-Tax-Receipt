@@ -53,3 +53,50 @@ body {
         justify-content: flex-end;
     }
 }
+
+@media print {
+    .utility {
+        display: none;
+    }
+}
+
+
+div.paper {
+    background: white;
+    display: block;
+    margin: 0.5cm auto;
+
+    box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+
+    &.a4 {
+        width: 21cm;
+        height: 29.7cm;
+    }
+
+    &.letter {
+        width: 8.5in;
+        height: 11in;
+    }
+
+    @media print {
+        padding: 0 !important;
+        box-shadow: unset;
+        width: 100%;
+        margin: 0 !important;
+    }
+
+
+    .receipt {
+        height: 50%;
+        font-size: 14px;
+        padding: .1rem .5rem;
+
+        &.first {
+            border-bottom: 1px dashed #000;
+        }
+
+        .el-form-item__error {
+            z-index: 2000;
+        }
+    }
+}

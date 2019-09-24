@@ -1,11 +1,20 @@
 <template>
-    <div class="bg">
-        <a4-paper>
+    <div class="bg" v-loading="isBusy">
+        <div class="utility">
+            <el-button type="primary" @click="printReceipt">
+                Print 打印
+            </el-button>
+        </div>
+        <a4-paper id="printMe">
             <template>
-                <receipt :sn="sn1" />
+                <receipt v-model="receipt" :sn="sn" ref="receipt" />
             </template>
             <template #bottom>
-                <receipt :sn="sn2" />
+                <receipt v-model="receipt" :sn="sn">
+                    <template #note>
+                        Keep This Copy For Your Record
+                    </template>
+                </receipt>
             </template>
         </a4-paper>
     </div>
@@ -25,17 +34,52 @@ export default {
     data: () => {
         return {
             airTableApi: new AirTableApi(),
-            sn1: -1,
-            sn2: -2,
+            sn: -1,
+            id: "",
+            receipt: {
+                amount: 0,
+                donor: "",
+                address: "",
+                dateDonation: "",
+            },
+            isBusy: true,
         };
     },
     async mounted () {
-        this.sn1 = await this.airTableApi.getReceiptNumber();
-        this.sn2 = await this.airTableApi.getReceiptNumber();
+        await this.getReceiptId();
+        this.isBusy = false;
+    },
+    methods: {
+        async getReceiptId () {
+            const snObject = await this.airTableApi.getReceiptNumber();
+            this.id = Object.keys(snObject)[0];
+            this.sn = snObject[this.id];
+        },
+        async printReceipt () {
+            this.$refs.receipt.$refs.form.validate(async valid => {
+                if (!valid) {
+                    this.$message("Please double check your input 請檢查您的輸入");
+                    return;
+                }
 
-        if (this.sn1 === this.sn2) {
-            this.sn2 ++;
-        }
+                this.isBusy = false;
+
+                this.airTableApi.saveReceipt(this.id, this.receipt.donor, this.receipt.amount);
+
+                window.print();
+
+                this.receipt = {
+                    amount: 0,
+                    donor: "",
+                    address: "",
+                    dateDonation: "",
+                };
+
+                await this.getReceiptId();
+
+                this.isBusy = false;
+            });
+        },
     },
 };
 </script>
@@ -43,5 +87,9 @@ export default {
 <style lang="scss" scoped>
     .bg {
         background: rgb(204, 204, 204);
+
+        @media print {
+            background:unset;
+        }
     }
 </style>

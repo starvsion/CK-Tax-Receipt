@@ -19,6 +19,7 @@
     "element-ui": "^2.4.11",
     "fs": "^0.0.1-security",
     "nuxt": "^2.0.0",
+    "printd": "^1.4.1",
     "sass": "^1.22.12",
     "sass-loader": "^8.0.0",
     "vue-currency-input": "^1.9.1",
