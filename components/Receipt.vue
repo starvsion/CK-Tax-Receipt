@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="receipt.id > 0">
         <div class="d-flex justify-end mb-2 org-detail">
             <div>
                 <img src="logo.png" class="logo">
@@ -11,7 +11,7 @@
         </div>
         <h3>
             Receipt No:
-            <span class="text-red number-text">{{ sn | padding }}</span>
+            <span class="text-red number-text">{{ receipt.id | padding }}</span>
         </h3>
         <div class="mb-2">
             <h3>OFFICIAL DONATION RECEIPT FOR INCOME TAX PURPOSES</h3>
@@ -85,10 +85,6 @@ export default {
         padding: toConvert => toConvert.toString().padStart(4, "0"),
     },
     props: {
-        sn: {
-            type: Number,
-            default: 0,
-        },
         value: {
             type: Object,
             default: () => ({

@@ -17,13 +17,13 @@
     "airtable": "^0.7.1",
     "dotenv": "^8.1.0",
     "element-ui": "^2.4.11",
-    "fs": "^0.0.1-security",
+    "firebase": "^6.6.2",
     "nuxt": "^2.0.0",
-    "printd": "^1.4.1",
     "sass": "^1.22.12",
     "sass-loader": "^8.0.0",
     "vue-currency-input": "^1.9.1",
-    "vue-luxon": "^0.7.0"
+    "vue-luxon": "^0.7.0",
+    "vuex-persist": "^2.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
