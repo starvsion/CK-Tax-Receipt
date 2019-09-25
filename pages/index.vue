@@ -10,6 +10,7 @@ export default {
     components: {
         login,
     },
+    layout: "CardLayout",
 };
 </script>
 

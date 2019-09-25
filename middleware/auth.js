@@ -1,8 +1,8 @@
 export default function ({ redirect, route }) {
-    if (route.name === "index" || route.name === "login") {
+    if (["index", "login", "register"].includes(route.name)) {
         return;
     }
-    let store = JSON.parse(sessionStorage.getItem("vuex"));
+    const store = JSON.parse(sessionStorage.getItem("vuex"));
     if (!store || !store.app.user.name) {
         return redirect("/");
     }

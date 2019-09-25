@@ -5,7 +5,7 @@
   "author": "Shuyi",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt --inspect",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -15,9 +15,12 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.6.0",
     "airtable": "^0.7.1",
+    "babel-cli": "^6.26.0",
     "dotenv": "^8.1.0",
     "element-ui": "^2.4.11",
+    "esm": "^3.2.25",
     "firebase": "^6.6.2",
+    "firesql": "^2.0.2",
     "nuxt": "^2.0.0",
     "sass": "^1.22.12",
     "sass-loader": "^8.0.0",

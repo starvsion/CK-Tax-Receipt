@@ -85,7 +85,7 @@ export default {
         },
         async printReceipt (saveOnly = false) {
             if (this.$refs.receipt !== undefined) {
-                this.$refs.receipt.$refs.form.validate((valid) => {
+                await this.$refs.receipt.$refs.form.validate((valid) => {
                     if (!valid) {
                         this.$message("Please double check your input 請檢查您的輸入");
                     }

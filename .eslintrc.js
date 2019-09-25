@@ -52,5 +52,7 @@ module.exports = {
             "SwitchCase": 1
         }],
         "standard/array-bracket-even-spacing": 0,
+        "require-await": "off",
+        "no-unused-expressions" : "off",
     }
 };
