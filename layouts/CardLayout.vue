@@ -2,14 +2,23 @@
     <div class="card-layout">
         <el-row type="flex" justify="center" align="center" class="w-100">
             <el-col :span="12" :xs="22">
+                        <ck-menu />
                 <el-card class="w-100">
-                    <nuxt/>
+                    <nuxt />
                 </el-card>
             </el-col>
         </el-row>
     </div>
 </template>
 
+<script>
+import Menu from "../components/Menu";
+export default {
+    name: "CardLayout",
+
+    components: { "ck-menu": Menu },
+};
+</script>
 <style scoped lang="scss">
     .card-layout::v-deep {
         display: flex;

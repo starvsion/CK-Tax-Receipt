@@ -1,4 +1,3 @@
-// src/utils/airtable.js
 import Airtable from "airtable";
 
 const LIST_TABLE = "捐贈列表";

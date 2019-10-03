@@ -1,8 +1,8 @@
 <template>
-    <div v-if="receipt.id > 0">
+    <div>
         <div class="d-flex justify-end mb-2 org-detail">
             <div>
-                <img src="logo.png" class="logo">
+                <img src="/logo.png" class="logo">
                 <br>正覺寺
                 <b>Ching Kwok Temple of Toronto</b>
                 <br>Affiliated with Tai Bay Buddhist Temple of Toronto
@@ -31,13 +31,14 @@
                 label-width="300px"
                 hide-required-asterisk
                 inline-message>
-                <el-form-item label="Date of Donation:" prop="dateDonation">
+                <el-form-item label="Date of Donation:" prop="donated_at">
                     <el-date-picker
-                        v-model="receipt.dateDonation"
+                        v-model="receipt.donated_at"
                         type="date"
                         prefix-icon=" "
                         placeholder="捐贈日期"
                         :picker-options="pickerOptions"
+                        size="large"
                         />
                 </el-form-item>
                 <el-form-item label="Eligible Amount of donation:" prop="amount">
@@ -91,7 +92,7 @@ export default {
                 amount: 0,
                 donor: "",
                 address: "",
-                dateDonation: "",
+                donated_at: "",
             }),
         },
     },
@@ -125,7 +126,7 @@ export default {
             donor: [
                 { required: true, message: "Please Enter Donor Name 請輸入捐贈者姓名", trigger: "blur" },
             ],
-            dateDonation: [
+            donated_at: [
                 { required: true, message: "Please Enter Donation Date 請輸入捐贈日期", trigger: "blur" },
             ],
         },

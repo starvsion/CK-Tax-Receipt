@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: Nunito;
+    font-family: Nunito,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     font-size: 12px;
 }
 
@@ -55,7 +55,7 @@ body {
 }
 
 @media print {
-    .utility {
+    .utility, .menu-bar, .el-form-item__error  {
         display: none;
     }
 }
@@ -112,3 +112,16 @@ div.paper {
 .text-center {
     text-align: center;
 }
+
+ .bg {
+        background: rgb(204, 204, 204);
+
+        @media print {
+            background: unset;
+        }
+    }
+
+    .utility {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }

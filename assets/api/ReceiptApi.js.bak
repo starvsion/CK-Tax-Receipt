@@ -1,0 +1,90 @@
+import Airtable from "airtable";
+
+const TABLE = "Receipt";
+
+export default class ReceiptApi {
+    airtableBase;
+    records = [];
+    currentRecords = [];
+    paginator = {};
+
+    constructor () {
+        this.airtableBase = new Airtable({ apiKey: process.env.atApiKey })
+            .base(process.env.atBaseId);
+    }
+
+    async list (page = 1, perPage = 15) {
+        return this.airtableBase(TABLE)
+            .select({
+                fields: ["id", "Name", "Amount", "Address", "Donation Date"],
+                pageSize: perPage,
+                sort: [{ field: "id", direction: "desc" }],
+            })
+            .eachPage(
+                (partialRecords, fetchNextPage) => {
+                    this.records = [...this.records, ...partialRecords];
+                    return fetchNextPage();
+                },
+                (err) => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+
+                    // process the `records` array and do something with it
+                    const offset = Math.max(0, page - 1) * perPage;
+                    this.currentRecords = this.records
+                        .map(item => ({
+                            atId: item.getId(),
+                            ...item.fields,
+                        }))
+                        .slice(offset, Math.min(offset + perPage, this.records.length));
+                });
+    }
+
+    getNumber () {
+        return this.airtableBase(TABLE)
+            .select({
+                fields: ["id", "Amount"],
+                maxRecords: 1,
+                sort: [{ field: "id", direction: "desc" }],
+            })
+            .firstPage()
+            .then((records) => {
+                if (!records || records.length < 1 || records[0].fields.Amount > 0) {
+                    return this.store();
+                }
+
+                return this._getReceiptIdObj(records);
+            });
+    }
+
+    async store (record = {}) {
+        return this.airtableBase(TABLE).create([{ fields: record }])
+            .then(records => this._getReceiptIdObj(records));
+    }
+
+    async update (atId, { name, amount }) {
+        return this.airtableBase(TABLE)
+            .update(
+                atId,
+                {
+                    Name: name,
+                    Amount: parseFloat(
+                        amount
+                            .replace(/[^\w\s\\.]/gi, "")
+                            .replace("CA", "")
+                    ),
+                }
+            );
+    }
+
+    _getReceiptIdObj (records) {
+        if (Array.isArray(records)) {
+            records = records[0];
+        }
+        return {
+            [records.getId()]: records.fields.id,
+        };
+    }
+}

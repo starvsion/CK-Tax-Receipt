@@ -1,6 +1,4 @@
-// /plugins/firebase.js
 import firebase from "firebase";
-
 const firebaseConfig = {
     apiKey: "AIzaSyCWXJRG6Fty6bV3lBpCbDSvL3dxid3dZz4",
     authDomain: "ck-cms.firebaseapp.com",

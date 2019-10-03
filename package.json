@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.6.0",
+    "@nuxtjs/router-extras": "^1.0.0",
     "airtable": "^0.7.1",
     "babel-cli": "^6.26.0",
     "dotenv": "^8.1.0",
@@ -24,6 +25,7 @@
     "nuxt": "^2.0.0",
     "sass": "^1.22.12",
     "sass-loader": "^8.0.0",
+    "vue-async-computed": "^3.7.0",
     "vue-currency-input": "^1.9.1",
     "vue-luxon": "^0.7.0",
     "vuex-persist": "^2.1.0"

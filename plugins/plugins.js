@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueCurrencyInput from "vue-currency-input";
+import AsyncComputed from "vue-async-computed";
 
 const pluginOptions = {
     globalOptions: {
@@ -9,3 +10,4 @@ const pluginOptions = {
     },
 };
 Vue.use(VueCurrencyInput, pluginOptions);
+Vue.use(AsyncComputed);

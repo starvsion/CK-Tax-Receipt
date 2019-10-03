@@ -1,10 +1,16 @@
 <template>
     <div v-loading="isBusy" class="bg">
-        <div class="utility">
-            <el-button type="primary" @click="printReceipt(false)">
+        <div class="utility text-center">
+
+            <el-button type="primary" @click="printReceipt(false)" v-if="! receipts.length">
                 Print 打印
             </el-button>
-            <el-badge :value="receipts.length">
+            <span v-else>
+                <el-button type="primary" @click="print()" v-if="showAll">
+                Print 打印
+            </el-button>
+            </span>
+            <el-badge :value="receipts.length" v-if="!showAll">
                 <el-button type="success" @click="printReceipt(true)">
                     Save 保存
                 </el-button>
@@ -12,7 +18,7 @@
             <el-button v-if="receipts.length > 0" type="info" @click="showAll=!showAll">
                 <span v-if="showAll">Go Back 返回添加界面</span>
                 <span v-else>Preview All 預覽全部</span>
-</el-button>
+            </el-button>
         </div>
         <a4-paper v-if="! showAll">
             <template>
@@ -45,29 +51,30 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import ReceiptApi from "../../assets/api/ReceiptApi";
 import A4Paper from "~/components/A4Paper";
 import receipt from "~/components/Receipt";
-import AirTableApi from "~/assets/api/AirTableApi";
+import printFn from "~/assets/helper/print";
 
 export default {
-    name: "Receipt",
+    name: "ReceiptIndex",
     components: {
         "a4-paper": A4Paper,
         receipt,
     },
     data: () => {
         return {
-            airTableApi: new AirTableApi(),
+            receiptApi: new ReceiptApi(),
             receipt: {
-                atId: "",
                 id: -1,
                 amount: 0,
                 donor: "",
                 address: "",
-                dateDonation: "",
+                donated_at: "",
             },
             isBusy: true,
             showAll: false,
+            title: "Receipt Form",
         };
     },
     computed: {
@@ -79,60 +86,54 @@ export default {
     },
     methods: {
         async getReceiptId () {
-            const snObject = await this.airTableApi.getReceiptNumber();
-            this.receipt.atId = Object.keys(snObject)[0];
-            this.receipt.id = snObject[this.receipt.atId];
+            Object.assign(this.receipt, await this.receiptApi.getNew());
         },
-        async printReceipt (saveOnly = false) {
+        async printReceipt (saveOnly = false, validate = true) {
+            let isValid = validate;
             if (this.$refs.receipt !== undefined) {
-                await this.$refs.receipt.$refs.form.validate((valid) => {
-                    if (!valid) {
-                        this.$message("Please double check your input 請檢查您的輸入");
-                    }
-                });
+                await this.$refs.receipt.$refs.form.validate(valid => isValid = valid);
+            }
+
+            if (!isValid) {
+                this.$message("Please double check your input 請檢查您的輸入");
+                return;
             }
 
             this.isBusy = false;
 
-            this.airTableApi.saveReceipt(this.receipt.atId, this.receipt.donor, this.receipt.amount);
+            await this.receiptApi.store(this.receipt);
 
             if (!saveOnly) {
-                window.print();
-            } else {
-                this.addReceipt(this.receipt);
+                return this.print();
             }
 
+            this.addReceipt(this.receipt);
+            this.reset();
+        },
+        print () {
+            printFn(() => this.reset());
+        },
+        ...mapActions({
+            addReceipt: "receipt/addReceipt",
+        }),
+        async reset () {
             this.receipt = {
                 id: 0,
                 atId: "",
                 amount: 0,
                 donor: "",
                 address: "",
-                dateDonation: "",
+                donated_at: "",
             };
 
             await this.getReceiptId();
 
             this.isBusy = false;
         },
-        ...mapActions({
-            addReceipt: "receipt/addReceipt",
-        }),
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .bg {
-        background: rgb(204, 204, 204);
 
-        @media print {
-            background: unset;
-        }
-    }
-
-    .utility {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
 </style>

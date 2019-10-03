@@ -47,6 +47,9 @@ export default {
     modules: [
         "@nuxtjs/axios",
     ],
+    buildModules: [
+        "@nuxtjs/router-extras",
+    ],
     /*
 ** Build configuration
 */
@@ -58,14 +61,14 @@ export default {
         extend (config, ctx) {
             config.devtool = ctx.isClient ? "eval-source-map" : "inline-source-map";
 
-            if (ctx.isDev && ctx.isClient) {
-                config.module.rules.push({
-                    enforce: "pre",
-                    test: /\.(js|vue)$/,
-                    loader: "eslint-loader",
-                    exclude: /(node_modules)/,
-                });
-            }
+            // if (ctx.isDev && ctx.isClient) {
+            //     config.module.rules.push({
+            //         enforce: "pre",
+            //         test: /\.(js|vue)$/,
+            //         loader: "eslint-loader",
+            //         exclude: /(node_modules)/,
+            //     });
+            // }
         },
     },
     router: {
