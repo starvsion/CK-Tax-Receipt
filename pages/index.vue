@@ -7,6 +7,9 @@ import login from "~/components/Login";
 
 export default {
     name: "Index",
+    head: {
+        title: "Login 登錄",
+    },
     data() {
         return {
             title: "Index",

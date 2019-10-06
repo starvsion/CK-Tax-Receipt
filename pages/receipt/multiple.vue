@@ -36,6 +36,9 @@ import printFn from "~/assets/helper/print";
 
 export default {
     name: "Multiple",
+    head: {
+        title: "Receipts Preview 收據預覽",
+    },
     components: {
         "a4-paper": A4Paper,
         receipt,

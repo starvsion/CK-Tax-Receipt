@@ -14,12 +14,16 @@ export default class ReceiptApi {
             .then(item => this._parseRecord(item));
     }
 
-    getNew () {
+    async getNew () {
         return DB.collection(TABLE)
             .orderBy("id", "desc")
             .limit(1)
             .get()
-            .then(item => ({ id: item.docs[0].data().id + 1 }));
+            .then((item) => {
+                return item.docs[0]
+                    ? { id: item.docs[0].data().id + 1 }
+                    : { id: 0 };
+            });
     }
 
     async store (record = {}) {

@@ -1,8 +1,8 @@
 <template>
     <div class="card-layout">
         <el-row type="flex" justify="center" align="center" class="w-100">
-            <el-col :span="12" :xs="22">
-                        <ck-menu />
+            <el-col :span="14" :xs="23">
+                <ck-menu />
                 <el-card class="w-100">
                     <nuxt />
                 </el-card>
@@ -16,16 +16,21 @@ import Menu from "../components/Menu";
 export default {
     name: "CardLayout",
 
-    components: { "ck-menu": Menu },
+    components: { "ck-menu": Menu }
 };
 </script>
 <style scoped lang="scss">
-    .card-layout::v-deep {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #35495e;
+.card-layout::v-deep {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #35495e;
+
+    .el-card {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-top: 0;
 
         .el-card__body {
             display: flex;
@@ -39,4 +44,5 @@ export default {
             }
         }
     }
+}
 </style>

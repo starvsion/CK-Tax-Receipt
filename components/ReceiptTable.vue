@@ -47,6 +47,8 @@
         <el-pagination
             class="text-center"
             layout="prev, next"
+            @next-click="page++"
+            @prev-click="page--"
             :total="50"
         />
     </el-card>
@@ -83,6 +85,9 @@ export default {
         updateToPrint (val) {
             this.toPrint = val;
         },
+        nextPage() {
+            this.page ++;
+        }
     },
 };
 </script>

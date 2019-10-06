@@ -9,6 +9,9 @@ import ReceiptTable from "../../components/ReceiptTable";
 
 export default {
     name: "ReceiptTable",
+     head: {
+        title: "Tax List 收據列表",
+    },
     components: {
         "receipt-table": ReceiptTable,
     },

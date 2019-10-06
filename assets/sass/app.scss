@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: Nunito,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-family: Nunito, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     font-size: 12px;
 }
 
@@ -55,7 +55,10 @@ body {
 }
 
 @media print {
-    .utility, .menu-bar, .el-form-item__error  {
+
+    .utility,
+    .menu-bar,
+    .el-form-item__error {
         display: none;
     }
 }
@@ -106,22 +109,22 @@ div.paper {
 }
 
 .w-75 {
-   width: 75%;
+    width: 75%;
 }
 
 .text-center {
     text-align: center;
 }
 
- .bg {
-        background: rgb(204, 204, 204);
+.bg {
+    background: rgb(204, 204, 204);
 
-        @media print {
-            background: unset;
-        }
+    @media print {
+        background: unset;
     }
+}
 
-    .utility {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
+.utility {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

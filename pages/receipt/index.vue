@@ -58,6 +58,9 @@ import printFn from "~/assets/helper/print";
 
 export default {
     name: "ReceiptIndex",
+     head: {
+        title: "Receipt Form - 收據表格",
+    },
     components: {
         "a4-paper": A4Paper,
         receipt,

@@ -49,6 +49,9 @@ import AuthProvider from "~/assets/api/AuthProvider";
 export default {
     name: "Login",
     layout: "CardLayout",
+     head: {
+        title: "Register 註冊",
+    },
     data () {
         const validatePassConfirm = (rule, value, callback) => {
             if (value === "") {
